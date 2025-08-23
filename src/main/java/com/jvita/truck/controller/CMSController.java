@@ -16,7 +16,7 @@ import org.springframework.http.ResponseEntity;
 
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/page")
 @CrossOrigin(origins = "*")
 public class CMSController {
 
