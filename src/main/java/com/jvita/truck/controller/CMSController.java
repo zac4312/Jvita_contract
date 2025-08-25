@@ -8,7 +8,9 @@ import com.jvita.truck.service.CMSService;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Optional;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -21,18 +23,19 @@ import org.springframework.http.ResponseEntity;
 public class CMSController {
 
     private final CMSService service;
+    private final Logger log = LoggerFactory.getLogger(CMSController.class);
 
     public CMSController(CMSService service){ this.service = service; }
          
    @PostMapping(value = "/save", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> createModels(@RequestPart("model") CMSModel model, 
-                                            @RequestPart("imgFile")MultipartFile imgFile) {
-
-    System.out.println(" ");
-    System.out.println("CONTROLLER");
-    System.out.println("MODEL: " + model);
-    System.out.println("NAME: " + model.getName());
-    System.out.println("DESCRIPTION: " + model.getDescription());
+                                          @RequestPart("imgFile")MultipartFile imgFile) {
+                        
+    log.info("Model: " + model);
+    log.info("Name: " + model.getName());
+    log.info("Description: " + model.getDescription());
+    log.info("Image: " + model.getImgFile());
+    
        try{
         CMSModel saved = service.createModel(model, imgFile);
         return ResponseEntity.ok(saved);
@@ -47,14 +50,19 @@ public class CMSController {
    }
    
    @GetMapping("/products/{id}")
-   public Optional<CMSModel> IdModels(@PathVariable Long id) {
-    return service.IdModel(id);
+   public CMSModel IdModels(@PathVariable Long id) {
+    return service.getModel(id);
    }
 
    @DeleteMapping("/dlt/{id}")
-   public ResponseEntity<Void> dltModel(@PathVariable Long id){
-     service.dltModel(id);
-     return ResponseEntity.noContent().build();
+   public ResponseEntity<Void> dltModels(@PathVariable Long id) { 
+    try
+    { service.dltModel(id);
+      return ResponseEntity.noContent().build();
+    }
+      catch (IOException e) 
+        { return ResponseEntity.noContent().build(); }
+    
    }
 
     @PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -70,9 +78,13 @@ public class CMSController {
               }
     }
 
-    @DeleteMapping("dlt-all")
+    @DeleteMapping("/dlt-all")
     public ResponseEntity<Void> deleteAll() {
-        service.dltALL();
-        return ResponseEntity.noContent().build();
+        try
+        { service.dltALL();
+          return ResponseEntity.noContent().build();
+        }
+         catch (IOException e)
+         { return ResponseEntity.noContent().build();}
     }
 }
