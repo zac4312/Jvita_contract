@@ -1,6 +1,6 @@
 package com.jvita.truck.DTO;
 
-
+package com.jvita.truck.model.CMSModel
 
 public class modelDTO {
 
@@ -23,7 +23,7 @@ public class modelDTO {
     public String getImgFile(){return imgFile;}
     public void setImgFile(String imgFile){this.imgFile = imgFile;}
 
-    public modelDTO convertToDTO(modelDTO model) {
+    public modelDTO convertToDTO(CMSMODEL model) {
         return new modelDTO( model.getName(),
                              model.getDescription(),
                              model.getImgFile()
@@ -31,3 +31,7 @@ public class modelDTO {
 
     }
 }
+
+// if public modelDTO convertToDTO(CMSMODEL model) is error
+
+// initialize new object(CMSMODEL)
