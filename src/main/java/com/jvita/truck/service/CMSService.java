@@ -9,7 +9,6 @@ import com.jvita.truck.repository.CMSRepository;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class CMSService {
@@ -25,7 +24,6 @@ public class CMSService {
         if (!imgFile.isEmpty() || imgFile != null) {
             model.setImgFile(FilingTool.uploadImg(imgFile));    
         }
-        
 
         return cmsRepository.save(model);   
     }
