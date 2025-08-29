@@ -3,6 +3,7 @@ package com.jvita.truck.controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.jvita.truck.DTO.*;
 import com.jvita.truck.model.CMSModel;
 import com.jvita.truck.service.CMSService;
 
@@ -20,24 +21,26 @@ import org.springframework.http.ResponseEntity;
 @RestController
 @RequestMapping("/page")
 @CrossOrigin(origins = "*")
+
+//// add input_modelDTO
 public class CMSController {
 
     private final CMSService service;
     private final Logger log = LoggerFactory.getLogger(CMSController.class);
 
-    public CMSController(CMSService service){ this.service = service; }
+    public CMSController(CMSService service){ this.service = service;}
          
    @PostMapping(value = "/save", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<?> createModels(@RequestPart("model") CMSModel model, 
+    public ResponseEntity<?> createModels(@RequestPart("model") Input_modelDTO inputDTO, 
                                           @RequestPart("imgFile")MultipartFile imgFile) {
                         
-    log.info("Model: " + model);
-    log.info("Name: " + model.getName());
-    log.info("Description: " + model.getDescription());
-    log.info("Image: " + model.getImgFile());
+    log.info("Model: " + inputDTO);
+    log.info("Name: " + inputDTO.getName());
+    log.info("Description: " + inputDTO.getDescription());
+    log.info("Image: " + inputDTO.getImgFile());
     
        try{
-        CMSModel saved = service.createModel(model, imgFile);
+        CMSModel saved = service.createModel(inputDTO, imgFile);
         return ResponseEntity.ok(saved);
        }catch(IOException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to upload content: " + e.getMessage());
@@ -45,12 +48,12 @@ public class CMSController {
    }
 
    @GetMapping("/products")
-   public List<CMSModel> listModels() {
+   public List<Output_modelDTO> listModels() {
        return service.listModel();
    }
    
    @GetMapping("/products/{id}")
-   public CMSModel IdModels(@PathVariable Long id) {
+   public Output_modelDTO IdModels(@PathVariable Long id) {
     return service.getModel(id);
    }
 

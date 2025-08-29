@@ -11,7 +11,7 @@ import java.util.UUID;
 @Component
 public class Filing {
 
-    @Value("${Jvita.upload-dir=/home/zac/PROJECTS/Jvita_contract/src/main/uploads}")
+    @Value("${Jvita.upload-dir:/home/zac/PROJECTS/Jvita_contract/src/main/uploads}")
     private String uploadDIR;
 
     public String uploadImg(MultipartFile imgFile) throws IOException {
