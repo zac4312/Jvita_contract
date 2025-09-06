@@ -15,3 +15,6 @@ Thumbs.db
 
 # Logs
 *.log
+
+#uploads
+/home/zac/PROJECTS/Jvita_contract/src/main/uploads

@@ -16,13 +16,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 
 
-@RestController
-@RequestMapping("/page")
+@Controller
+@RequestMapping("/admin")
 @CrossOrigin(origins = "*")
 
-//// add input_modelDTO
 public class CMSController {
 
     private final CMSService service;
@@ -48,9 +49,11 @@ public class CMSController {
    }
 
    @GetMapping("/products")
-   public List<Output_modelDTO> listModels() {
-       return service.listModel();
-   }
+   public String listModels(Model model){ 
+   List<Output_modelDTO> products = service.listModel();
+   model.addAttribute("products", products);
+   return "products";
+  }
    
    @GetMapping("/products/{id}")
    public Output_modelDTO IdModels(@PathVariable Long id) {
